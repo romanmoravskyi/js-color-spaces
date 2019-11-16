@@ -165,7 +165,18 @@ function canvasMouseMove(e) {
 
 // transformations
 
-// converts from [r, g, b] value to [h, s, v] value
+// https://gist.github.com/mjackson/5311256
+/**
+ * Converts an RGB color value to HSV. Conversion formula
+ * adapted from http://en.wikipedia.org/wiki/HSV_color_space.
+ * Assumes r, g, and b are contained in the set [0, 255] and
+ * returns h, s, and v in the set [0, 1].
+ *
+ * @param   Number  r       The red color value
+ * @param   Number  g       The green color value
+ * @param   Number  b       The blue color value
+ * @return  Array           The HSV representation
+ */
 function rgbToHsv(r, g, b) {
   (r /= 255), (g /= 255), (b /= 255);
 
@@ -199,7 +210,18 @@ function rgbToHsv(r, g, b) {
   return [h, s, v];
 }
 
-// converts from [h, s, v] value to [r, g, b] value
+// https://gist.github.com/mjackson/5311256
+/**
+ * Converts an HSV color value to RGB. Conversion formula
+ * adapted from http://en.wikipedia.org/wiki/HSV_color_space.
+ * Assumes h, s, and v are contained in the set [0, 1] and
+ * returns r, g, and b in the set [0, 255].
+ *
+ * @param   Number  h       The hue
+ * @param   Number  s       The saturation
+ * @param   Number  v       The value
+ * @return  Array           The RGB representation
+ */
 function hsvToRgb(h, s, v) {
   let r, g, b;
 
