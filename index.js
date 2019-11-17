@@ -18,7 +18,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
   getElement("slider").addEventListener("input", () => {
     let value = getElement("slider").value;
-    changeBlueBrightness(value, max, min);
+    //changeBlueBrightness(value, max, min);
+    changeMagentaSaturation(value, max, min);
   });
 
   getElement("btnRestore").addEventListener(
@@ -109,6 +110,42 @@ function changeBlueBrightness(blueValue, max, min) {
       newBlue = orgBlue + (orgBlue / -min) * blueValue;
     }
     imgData.data[i + 2] = newBlue;
+  }
+
+  ctx.putImageData(imgData, 0, 0);
+}
+
+function changeMagentaSaturation(value, max, min) {
+  let imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+  let orgImgData = orgCtx.getImageData(0, 0, orgCanvas.width, orgCanvas.height);
+
+  let i;
+  for (i = 0; i < imgData.data.length; i += 4) {
+    let rgb = [
+      orgImgData.data[i],
+      orgImgData.data[i + 1],
+      orgImgData.data[i + 2]
+    ];
+
+    let hsv = rgbToHsv(rgb[0], rgb[1], rgb[2]);
+
+    let hueDeg = hsv[0] * 360;
+    let newSaturation;
+
+    if (hueDeg > 270 && hueDeg < 330) {
+      if (value >= 0) {
+        newSaturation = hsv[1] + ((1 - hsv[1]) / max) * value;
+      } else {
+        newSaturation = hsv[1] + (hsv[1] / -min) * value;
+      }
+      hsv[1] = newSaturation;
+
+      rgb = hsvToRgb(hsv[0], hsv[1], hsv[2]);
+      imgData.data[i] = rgb[0];
+      imgData.data[i + 1] = rgb[1];
+      imgData.data[i + 2] = rgb[2];
+      imgData.data[i + 3] = 255;
+    }
   }
 
   ctx.putImageData(imgData, 0, 0);
