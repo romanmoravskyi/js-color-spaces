@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", function() {
         0,
         0
       );
-      blueValue = 0;
+      getElement("slider").value = 0;
     },
     false
   );
